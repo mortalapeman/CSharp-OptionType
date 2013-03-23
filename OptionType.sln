@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Web
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionType", "OptionType\OptionType.csproj", "{4B54F892-ACEA-4339-ACB5-0391173226CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionType.UnitTests", "OptionType.UnitTests\OptionType.UnitTests.csproj", "{61D387B1-3F5D-439D-835B-DAE43690BF1E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B54F892-ACEA-4339-ACB5-0391173226CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B54F892-ACEA-4339-ACB5-0391173226CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B54F892-ACEA-4339-ACB5-0391173226CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B54F892-ACEA-4339-ACB5-0391173226CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61D387B1-3F5D-439D-835B-DAE43690BF1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61D387B1-3F5D-439D-835B-DAE43690BF1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61D387B1-3F5D-439D-835B-DAE43690BF1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61D387B1-3F5D-439D-835B-DAE43690BF1E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
