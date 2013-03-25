@@ -39,7 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="INoneContext.cs" />
+    <Compile Include="ISomeContext.cs" />
     <Compile Include="Option.cs" />
+    <Compile Include="OptionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

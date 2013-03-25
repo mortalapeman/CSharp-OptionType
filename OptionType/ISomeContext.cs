@@ -18,5 +18,12 @@ namespace OptionType {
         /// <param name="func">Provides the implementation for handling null values.</param>
         /// <returns>Returns the type to convert to from type T.</returns>
         R None(Func<INoneContext<R>, R> func);
+
+        /// <summary>
+        /// Convenience method for returning a defautl value of type R.
+        /// </summary>
+        /// <param name="defaultValue">Default value to return.</param>
+        /// <returns>Returns the value given by the input if the context is None.</returns>
+        R None(R defaultValue);
     }
 }

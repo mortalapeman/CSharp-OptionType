@@ -95,6 +95,10 @@ namespace OptionType {
                 return func(new NoneContext<R>(default(R), false));
             }
 
+            public R None(R defaultValue) {
+                return this.None(x => x.Default(defaultValue));
+            }
+
             private bool IsSome() {
                 return !EqualityComparer<T>.Default.Equals(default(T), value);
             }
