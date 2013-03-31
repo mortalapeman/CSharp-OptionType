@@ -1,7 +1,7 @@
 Description
 =================
 
-OptionType is a small set of classes and interfaces that emulates the functionality provided in F# for the Option type by requiring explicit handling of null values.
+OptionType is a small set of classes and interfaces that emulates the functionality provided in F# for the Option type by requiring explicit handling of null values/failed computations.
 
 Rationale
 =================
@@ -46,5 +46,6 @@ This is what the CSharp-OptionType implementation looks like:
     }
 ```
 	
-If we were to try to stop at Some with the CSharp-OptionType, our return type would be ```ISomeContext<SomeType, bool>``` and we still woudln't be able to access the result without calling ```None```. This ensures that we will never forget to handle a null value again. It is also serves as an explicit signal to the caller of the method that the return type might be null.
+If we were to try to stop at Some with the CSharp-OptionType, our return type would be ```ISomeContext<SomeType, bool>``` and we still woudln't be able to access the result without calling ```None```. This ensures that we will never forget to handle a null value again.
+    
 
