@@ -6,101 +6,57 @@ using System.Threading.Tasks;
 
 namespace OptionType {
     /// <summary>
-    /// Static helper class for creation Option type instances.
+    /// Static helper methods for creating Option types.
     /// </summary>
     public static class Option {
         /// <summary>
-        /// Static helper method for creation of Option type instances.
+        /// Creates an option type that represents a successful computation.
         /// </summary>
-        /// <typeparam name="T">Any non value type.</typeparam>
-        /// <param name="obj">Object to wrap with Option type.</param>
-        /// <returns>An Option type wrapper around the supplied obj.</returns>
-        public static Option<T> Create<T>(T obj) where T : class {
-            return new Option<T>(obj);
-        }
+        /// <typeparam name="T">Return type of the computation.</typeparam>
+        /// <param name="obj">Object to return from the compuation.</param>
+        /// <returns>An option type for a successful operation.</returns>
+        public static IOption<T> Some<T>(T obj) { return new Some<T>(obj); }
+
+        /// <summary>
+        /// Creates an option type that represents a failed computation.
+        /// </summary>
+        /// <typeparam name="T">Return type of the computation.</typeparam>
+        /// <param name="obj">Object used to determine the generic type T.</param>
+        /// <returns>An option type of a failed operation.</returns>
+        public static IOption<T> None<T>(T obj) { return new None<T>(); }
+
+        /// <summary>
+        /// Creates an option type that represents a failed computation.
+        /// </summary>
+        /// <typeparam name="T">Return type of the computation.</typeparam>
+        /// <returns>An option type of a failed operation.</returns>
+        public static IOption<T> None<T>() { return new None<T>(); }
     }
 
-    /// <summary>
-    /// Class that requires explicit handling of null values before returning
-    /// its contained value.
-    /// </summary>
-    /// <typeparam name="T">Any non value type.</typeparam>
-    public class Option<T> where T : class {
-        private T value;
+    internal abstract class Option<T> {
 
-        /// <summary>
-        /// Contructor for Option type.
-        /// </summary>
-        /// <param name="value">Value to wrap with Option type.</param>
-        public Option(T value) {
-            this.value = value;
+        public ISomeContext<T, R> Some<R>(Func<T, R> func) {
+            var builder = new OptionVisitorBuilder<T, R>().Some(func);
+            return new SomeContextHelper<T, R>(this, builder);
         }
 
-        /// <summary>
-        /// Begins the context shift for handling of non null values.
-        /// </summary>
-        /// <typeparam name="R">Return type of the converter funtion.</typeparam>
-        /// <param name="converter">Function to convert the internal value to type R.</param>
-        /// <returns>Returns the next context used to deal with null values.</returns>
-        public ISomeContext<T, R> Some<R>(Func<T, R> converter) {
-            return new SomeContext<T, R>(value, converter);
-        }
+        internal abstract R Accept<R>(OptionVisitor<T, R> visitor);
 
-        private class NoneContext<R> : INoneContext<R>{
-            private R value;
-            private bool isSome;
+        private class SomeContextHelper<TSome, TResult> : ISomeContext<TSome, TResult> {
+            OptionVisitorBuilder<TSome, TResult> builder;
+            Option<TSome> option;
 
-            public NoneContext(R value, bool isSome) {
-                this.value = value;
-                this.isSome = isSome;
+            internal SomeContextHelper(Option<TSome> option, OptionVisitorBuilder<TSome, TResult> builder) {
+                this.builder = builder;
+                this.option = option;
             }
 
-            public R Throw(Exception e) {
-                if (isSome)
-                    return value;
-                throw e;
+            public TResult None(Func<INoneContext<TResult>, TResult> func) {
+                return option.Accept(builder.None(func).Build());
             }
 
-            public R Default() {
-                if (isSome)
-                    return value;
-                return default(R);
-            }
-
-            public R Default(R value) {
-                if (isSome)
-                    return this.value;
-                return value;
-            }
-
-            public R Do(Func<R> func) {
-                if (isSome)
-                    return value;
-                return func();
-            }
-        }
-
-        private class SomeContext<T, R> : ISomeContext<T, R> where T : class {
-            private T value;
-            private Func<T, R> convert;
-
-            public SomeContext(T value, Func<T, R> convert) {
-                this.value = value;
-                this.convert = convert;
-            }
-
-            public R None(Func<INoneContext<R>, R> func) {
-                if (IsSome())
-                    return func(new NoneContext<R>(convert(value), true));
-                return func(new NoneContext<R>(default(R), false));
-            }
-
-            public R None(R defaultValue) {
-                return this.None(x => x.Default(defaultValue));
-            }
-
-            private bool IsSome() {
-                return !EqualityComparer<T>.Default.Equals(default(T), value);
+            public TResult None(TResult defaultValue) {
+                return option.Accept(builder.None(x => x.Default(defaultValue)).Build());
             }
         }
     }

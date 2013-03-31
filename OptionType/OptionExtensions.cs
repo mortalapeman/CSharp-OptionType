@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace OptionType {
     public static class OptionExtension {
-        public static Option<T> ToOption<T>(this T obj) where T : class {
-            return Option.Create(obj);
+        public static IOption<T> ToOption<T>(this T obj) where T : class {
+            return obj.ToOption(x => !object.ReferenceEquals(x, default(T)));
+        }
+
+        public static IOption<T> ToOption<T>(this T obj, Func<T, bool> isSome) {
+            if (isSome(obj)) {
+                return Option.Some(obj);
+            } else {
+                return Option.None<T>();
+            }
         }
     }
 }

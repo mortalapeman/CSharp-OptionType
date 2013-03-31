@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace OptionType {
     /// <summary>
-    /// Context for handling of null values.
+    /// Context for handling of failed computations.
     /// </summary>
     /// <typeparam name="R">Type to return to statisfy contract.</typeparam>
     public interface INoneContext<R> {
         /// <summary>
-        /// Throws the given exception if the previous context determines
-        /// the internal value is a null value.
+        /// Throws the given exception if the computation failed.
         /// </summary>
         /// <param name="e">Exception to be thrown</param>
         /// <returns>Type to satisfy contract.</returns>
@@ -24,15 +23,15 @@ namespace OptionType {
         R Default();
         /// <summary>
         /// Returns the given value if the previous context determines
-        /// that the internal value is null.
+        /// that the computation failed.
         /// </summary>
-        /// <param name="value">Default value to return inplace of default(R).</param>
+        /// <param name="value">Default value to return instead of default(R).</param>
         /// <returns>Type to satisfy contract.</returns>
         R Default(R value);
         /// <summary>
-        /// Runs the supplied funtion to run if the internal value is null.
+        /// Invokes the given funtion to run if the computation fails.
         /// </summary>
-        /// <param name="func">Custom funtion to run if internal value is null.</param>
+        /// <param name="func">Custom funtion to run if hte computation fails.</param>
         /// <returns>Type to satisfy contract.</returns>
         R Do(Func<R> func);
     }
